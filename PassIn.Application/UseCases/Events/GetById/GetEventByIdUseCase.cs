@@ -6,16 +6,20 @@ namespace PassIn.Application.UseCases.Events.GetById
 {
     public class GetEventByIdUseCase
     {
+        private readonly PassInDbContext _context;
+        public GetEventByIdUseCase()
+        {
+            _context = new PassInDbContext();
+        }
+
         public ResponseEventJson Execute(Guid id)
         {
-            var dbContext = new PassInDbContext();
+            var entity = _context.Events.Find(id);
+            if (entity is null)
+                throw new NotFoundException("An event with this id don't exist.");
 
-            var entity = dbContext.Events.Find(id);
-            if(entity is null)
-                throw new PassInException("An event with this id don't exist.");
-
-            return new ResponseEventJson 
-            { 
+            return new ResponseEventJson
+            {
                 Id = entity.Id,
                 Title = entity.Title,
                 Details = entity.Details,
