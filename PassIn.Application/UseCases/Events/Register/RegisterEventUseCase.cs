@@ -7,10 +7,10 @@ namespace PassIn.Application.UseCases.Events.Register
 {
     public class RegisterEventUseCase
     {
-        private readonly PassInDbContext _context;
+        private readonly PassInDbContext _dbContext;
         public RegisterEventUseCase()
         {
-            _context = new PassInDbContext();
+            _dbContext = new PassInDbContext();
         }
 
         public ResponseRegisteredJson Execute(RequestEventJson request)
@@ -25,8 +25,8 @@ namespace PassIn.Application.UseCases.Events.Register
                 Slug = request.Title.ToLower().Replace(" ", "-"),
             };
 
-            _context.Events.Add(entity);
-            _context.SaveChanges();
+            _dbContext.Events.Add(entity);
+            _dbContext.SaveChanges();
 
             return new ResponseRegisteredJson
             {
